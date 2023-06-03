@@ -1,0 +1,17 @@
+<script>
+window.onload = function() {
+    var forms = document.getElementsByName('linkform');
+    if(forms.length > 0) {
+        var form = forms[0];
+        form.enctype = 'multipart/form-data';
+    }
+}
+</script>
+<br>
+<div class="form-group">
+    <div class="col-sm-12">
+        <label for="image" class="control-label">Bild hochladen:</label>
+        <input type="file" class="form-control" id="image" name="image" accept="image/*" style="display: inline-block;">
+    </div>
+</div>
+
