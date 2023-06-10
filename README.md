@@ -10,7 +10,7 @@ This plugin for Shaarli allows users to upload an image file when sharing a link
 
 ## Installation
 
-To install the plugin, create a new folder in `plugins/image_upload` directory of your Shaarli installation and copy all files to it. Then, go to the plugin administration page and enable the Image Upload plugin.
+To install the plugin, first create a new directory within the plugins path of your Shaarli installation named image_upload. Next, copy all the plugin files into this new directory. Finally, navigate to the plugin administration page in Shaarli and enable the Image Upload plugin.
 
 ### Docker Installation
 
