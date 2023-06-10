@@ -3,9 +3,24 @@
 /**
  * Image Upload plugin
  */
-
 use Shaarli\Plugin\PluginManager;
 use Shaarli\Config\ConfigManager;
+
+
+/**
+ * Render image upload form in the link edition form.
+ *
+ * @param array $data - form data.
+ *
+ * @return array - Updated form data.
+ */
+function hook_image_upload_render_editlink($data)
+{
+    $html = file_get_contents(PluginManager::$PLUGINS_PATH . '/image_upload/image_upload_form.html');
+    $data['edit_link_plugin'][] = $html;
+
+    return $data;
+}
 
 /**
  * When link is saved, upload the image and add it to the description
@@ -23,6 +38,12 @@ function hook_image_upload_save_link($data, $conf)
     if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         return $data;
     }
+	
+	if(!is_valid_image_file($_FILES['image']['tmp_name']))
+	{
+		// Not a valid image file
+        return $data;
+	}
 
     // Path where the image will be saved
 	$imageDir = $conf->get('resource.data_dir') . '/images';
@@ -48,6 +69,19 @@ function hook_image_upload_save_link($data, $conf)
     return $data;
 }
 
+/**
+ * Use getimagesize to check if file is an image
+ */
+function is_valid_image_file($filePath) {
+    $imageInfo = @getimagesize($filePath);
+
+    // If getimagesize returns false, then the file is not a valid image
+    if ($imageInfo === false) {
+        return false;
+    }
+    return true;
+}
+
 function getFullUrl($relativePath) {
     // Überprüfen, ob HTTPS verwendet wird oder nicht
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
@@ -61,20 +95,7 @@ function getFullUrl($relativePath) {
     return $fullUrl;
 }
 
-/**
- * Render image upload form in the link edition form.
- *
- * @param array $data - form data.
- *
- * @return array - Updated form data.
- */
-function hook_image_upload_render_editlink($data)
-{
-    $html = file_get_contents(PluginManager::$PLUGINS_PATH . '/image_upload/image_upload_form.html');
-    $data['edit_link_plugin'][] = $html;
 
-    return $data;
-}
 
 
 
