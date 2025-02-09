@@ -64,7 +64,7 @@ function hook_image_upload_save_link($data, $conf)
     }
 
     // Add link to the uploaded image in the description
-    $data['description'] = '![' . $_FILES['image']['name'] . '](' . getFullUrl($imgPath) . ")\n" . $data['description'];
+    $data['description'] = '![' . $_FILES['image']['name'] . '](' . getFullUrl($imgPath, $data[_BASE_PATH_]) . ")\n" . $data['description'];
 
     return $data;
 }
@@ -82,17 +82,16 @@ function is_valid_image_file($filePath) {
     return true;
 }
 
-function getFullUrl($relativePath) {
-    // Überprüfen, ob HTTPS verwendet wird oder nicht
+function getFullUrl($relativePath, $basePath) {
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
 
-    // Der Hostname ist die Domain des Servers
     $hostname = $_SERVER['HTTP_HOST'];
+    
+    if(!empty($basePath)) {
+        return $protocol . "://" . $hostname . "/" .trim($basePath, ',') . "/" . ltrim($relativePath, "/");    
+    }
 
-    // Jetzt können wir den vollständigen URL erstellen
-    $fullUrl = $protocol . "://" . $hostname . "/" . ltrim($relativePath, '/');
-
-    return $fullUrl;
+    return $protocol . "://" . $hostname . "/" . ltrim($relativePath, '/');
 }
 
 
