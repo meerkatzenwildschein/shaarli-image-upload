@@ -88,7 +88,7 @@ function getFullUrl($relativePath, $basePath) {
     $hostname = $_SERVER['HTTP_HOST'];
     
     if(!empty($basePath)) {
-        return $protocol . "://" . $hostname . "/" .trim($basePath, ',') . "/" . ltrim($relativePath, "/");    
+        return $protocol . "://" . $hostname . "/" .trim($basePath, '/') . "/" . ltrim($relativePath, "/");    
     }
 
     return $protocol . "://" . $hostname . "/" . ltrim($relativePath, '/');
